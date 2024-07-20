@@ -1,0 +1,798 @@
+{
+	"info": {
+		"_postman_id": "f228f045-6892-42b1-a89d-b32f4c4b9bda",
+		"name": "Reqres_Binar",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20672644"
+	},
+	"item": [
+		{
+			"name": "LIST <Resource>",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Response status code is 200 \"OK\"', () => {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test('Response time is less than 100ms', () => {",
+							"    const time = 100;",
+							"    pm.expect(pm.response.responseTime).to.be.below(time);",
+							"});",
+							"",
+							"pm.test('Response content-type is JSON', () => {",
+							"    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');",
+							"});",
+							"",
+							"pm.test(\"validate 'id' data type is number\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData.data[0].id).to.be.a('number');",
+							"});",
+							"",
+							"pm.test(\"validate total pages is 2\",()=>{",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData.total_pages).to.equal(2);",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept-Language",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}api/uknown",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"uknown"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LIST USERS",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\",()=>{\r",
+							"    pm.expect(pm.response.code).to.equal(200);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Response time is less than a limit\",()=>{\r",
+							"    const limit = 100;\r",
+							"    pm.expect(pm.response.responseTime).to.below(limit);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"validate content-type is JSON\",()=>{\r",
+							"    pm.expect(pm.response.headers.get(\"Content-type\")).to.include(\"application/json\");\r",
+							"})\r",
+							"\r",
+							"pm.test(\"validate page is 2, total is 12 and total_pages is 12\",()=>{\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.page).to.equal(1);\r",
+							"    pm.expect(jsonData.total).to.equal(12);\r",
+							"    pm.expect(jsonData.total_pages).to.equal(2);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"validate data body format\",()=>{\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.data[0].id).to.a('number');\r",
+							"    pm.expect(jsonData.data[0].email).to.a('string');\r",
+							"    pm.expect(jsonData.data[0].first_name).to.a('string');\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}api/users?page=1",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"users"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CREATE USER",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Fixed syntax error in test case",
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"    pm.response.to.have.status('Created')",
+							"});",
+							"",
+							"// Fixed syntax error in test case",
+							"pm.test(\"Respone time is less than limit\", function(){",
+							"    const limit = 1000;",
+							"    pm.expect(pm.response.responseTime).to.be.below(limit);",
+							"});",
+							"",
+							"// Fixed syntax error in test case",
+							"pm.test(\"validate 'name' data type is number\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData.id).to.be.a('string');",
+							"});",
+							"",
+							"// Fixed syntax error in test case",
+							"pm.test(\"validate of name field\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData.name).to.eql('heru');",
+							"    pm.expect(jsonData.job).to.eql('SDET')",
+							"});",
+							"",
+							"pm.test(\"Validate field input\", function () {",
+							"    var responseJSON = pm.response.json();",
+							"    pm.expect(responseJSON).to.be.an('object');",
+							"    pm.expect(responseJSON).to.have.property('name').that.is.a('string');",
+							"    pm.expect(responseJSON).to.have.property('job').that.is.a('string');",
+							"    pm.expect(responseJSON).to.have.property('id').that.is.a('string');",
+							"    pm.expect(responseJSON).to.have.property('createdAt').that.is.a('string');",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"heru\",\r\n    \"job\": \"SDET\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}api/users",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SINGLE USER",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response code should be 200\",()=>{\r",
+							"    pm.expect(pm.response.code).to.equal(200)\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Response Time should be under limit\",()=>{\r",
+							"    const limit = 200;\r",
+							"    pm.expect(pm.response.responseTime).to.below(limit);\r",
+							"})\r",
+							"\r",
+							"    const jsonData = pm.response.json();\r",
+							"pm.test(\"headers content-type should be application/json\",()=>{\r",
+							"    pm.expect(pm.response.headers.get('Content-type')).to.include('application/json');\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Value data body should be equal with expect\",()=>{\r",
+							"    pm.expect(jsonData.data.id).to.equal(2);\r",
+							"    pm.expect(jsonData.data.email).to.eql('janet.weaver@reqres.in');\r",
+							"    pm.expect(jsonData.data.first_name).to.eql('Janet');\r",
+							"    pm.expect(jsonData.data.last_name).to.eql('Weaver');\r",
+							"    pm.expect(jsonData.data.avatar).to.eql('https://reqres.in/img/faces/2-image.jpg')\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}api/users/2",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"users",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SINGLE USER NOT FOUND",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response code should be 404\",()=>{\r",
+							"    pm.expect(pm.response.code).to.eql(404)\r",
+							"})\r",
+							"pm.test(\"Response status code shoulde be Not Found\",()=>{\r",
+							"    pm.expect(pm.response.status).to.eql('Not Found')\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}api/users/100",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"users",
+						"100"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UPDATE USER",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Fixed syntax error in test case\r",
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.have.status('OK')\r",
+							"});\r",
+							"\r",
+							"// Fixed syntax error in test case\r",
+							"pm.test(\"Respone time is less than limit\", function(){\r",
+							"    const limit = 1000;\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(limit);\r",
+							"});\r",
+							"\r",
+							"// Fixed syntax error in test case\r",
+							"pm.test(\"validate of name field\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.name).to.eql('heru');\r",
+							"    pm.expect(jsonData.job).to.eql('SDOT')\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validate field input\", function () {\r",
+							"    var responseJSON = pm.response.json();\r",
+							"    pm.expect(responseJSON).to.be.an('object');\r",
+							"    pm.expect(responseJSON).to.have.property('name').that.is.a('string');\r",
+							"    pm.expect(responseJSON).to.have.property('job').that.is.a('string');\r",
+							"    pm.expect(responseJSON).to.have.property('updatedAt').that.is.a('string');\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\" : \"heru\",\r\n    \"job\" : \"SDOT\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}api/users/2",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"users",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "REGISTER - SUCCESSFUL",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"  pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Content-Type is application/json\", function () {",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has the required fields - id and token\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData).to.have.property('id');",
+							"    pm.expect(responseData).to.have.property('token');",
+							"});",
+							"",
+							"",
+							"pm.test(\"Id is a non-negative integer\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData.id).to.be.a('number').and.to.satisfy((id) => id >= 0, \"Id should be a non-negative integer\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"Token is a non-empty string\", function () {",
+							"  const responseData = pm.response.json();",
+							"  ",
+							"  pm.expect(responseData.token).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Token should not be empty\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"eve.holt@reqres.in\",\r\n    \"password\": \"pistol\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}api/register",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "REGISTER - UNSUCESSFUL",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Data body should response missing password\",()=>{\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.error).to.eql('Missing password');\r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"eve.holt@reqres.in\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}api/register",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SINGLE <RESOURCE>",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Response status code is 200 \"OK\"', () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test('Response time is less than 100ms', () => {\r",
+							"    const time = 100;\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(time);\r",
+							"});\r",
+							"\r",
+							"pm.test('Data body shouled be equal with expect',()=>{\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.data.id).to.eql(2);\r",
+							"    pm.expect(jsonData.data.name).to.eql('fuchsia rose');\r",
+							"    pm.expect(jsonData.data.year).to.eql(2001);\r",
+							"    pm.expect(jsonData.data.color).to.eql('#C74375');\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}api/unknown/2",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"unknown",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SINGLE <RESOURCE> NOT FOUND",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response code and status code should be 404-Not Found\",()=>{\r",
+							"    pm.expect(pm.response.code).to.eql(404);\r",
+							"    pm.expect(pm.response.status).to.eql('Not Found')\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}api/unknown/23",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"unknown",
+						"23"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UPDATE USER",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Fixed syntax error in test case\r",
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.have.status('OK')\r",
+							"});\r",
+							"\r",
+							"// Fixed syntax error in test case\r",
+							"pm.test(\"Respone time is less than limit\", function(){\r",
+							"    const limit = 1000;\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(limit);\r",
+							"});\r",
+							"\r",
+							"// Fixed syntax error in test case\r",
+							"pm.test(\"validate of name field\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.name).to.eql('heru');\r",
+							"    pm.expect(jsonData.job).to.eql('SDUT')\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validate field input\", function () {\r",
+							"    var responseJSON = pm.response.json();\r",
+							"    pm.expect(responseJSON).to.be.an('object');\r",
+							"    pm.expect(responseJSON).to.have.property('name').that.is.a('string');\r",
+							"    pm.expect(responseJSON).to.have.property('job').that.is.a('string');\r",
+							"    pm.expect(responseJSON).to.have.property('updatedAt').that.is.a('string');\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\" : \"heru\",\r\n    \"job\" : \"SDUT\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}api/users/2",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"users",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 204\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}api/users/2",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"users",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LOGIN - SUCCESSFUL",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"  pm.expect(pm.response.code).to.equal(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Content-Type header is application/json\", function () {",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"Token should not be empty\", function () {",
+							"  const responseData = pm.response.json();",
+							"  pm.expect(responseData.token).to.exist.and.to.not.be.empty;",
+							"});",
+							"",
+							"",
+							"pm.test(\"Token is in a valid format\", function () {",
+							"  const responseData = pm.response.json();",
+							"  ",
+							"  pm.expect(responseData.token).to.be.a('string').and.to.have.lengthOf.at.least(1);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response time is less than 500ms\", function () {",
+							"  pm.expect(pm.response.responseTime).to.be.below(500);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"eve.holt@reqres.in\",\r\n    \"password\": \"cityslicka\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}api/login",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LOGIN - UNSUCCESSFUL",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Data body should response missing password\",()=>{\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.error).to.eql('Missing password');\r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"peter@klaven\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}api/login",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
